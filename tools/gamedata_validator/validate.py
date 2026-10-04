@@ -285,7 +285,6 @@ def discord_messages(result, context):
             {'name': '​', 'value': '​', 'inline': True},
         ],
         'timestamp': result['generated_at'],
-        'footer': {'text': 'Source2Toolkit gamedata validator · based on swiftly-solution/gamedata-validator'},
     }
 
     problems = []
