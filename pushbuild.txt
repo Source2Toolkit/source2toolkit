@@ -79,3 +79,4 @@ Also covers IToolkitModule::New("server") and gamedata/KHOOK_GAMEDATA hooks on t
 (Previous run did not build on MSVC: windows.h's GetModuleHandle macro in module.cpp.)
 Windows: the dedicated server console is switched to UTF-8 at load, so names with non-ASCII characters (author strings, players) print correctly instead of in the OEM code page.
 gamedata: Windows offsets for all 17 interface virtual hooks (GameFrame, ClientCommand, CheckTransmit, FireEvent, PostEventAbstract, StartupServer, SendNetMessage, ...), each checked in the Windows binaries; no hook falls back to the compiled-in interface index any more.
+Rebuild against SteamDatabase/Protobufs with its per-game descriptor.proto (bd8f82d); no code changes.
