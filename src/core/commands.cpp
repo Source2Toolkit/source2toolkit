@@ -225,24 +225,6 @@ namespace commands {
                     api->GetName(),
                     api->GetVersion(),
                     api->GetAuthor());
-
-                // API 2 plugins say what they were built against; the tier
-                // tells the admin whether an engine or KHook change means a
-                // rebuild of this plugin or only of the core.
-                if (p->apiVersion >= 2)
-                {
-                    const int rawHooks = api->GetRawHookCount();
-                    if (rawHooks)
-                        REPLY_INFO(C_DIM "       API %d, KHook %.12s, " C_WARN "raw tier" C_DIM " (own KHook hooks: rebuild on a KHook or engine change)",
-                                   p->apiVersion, api->GetKHookCommit());
-                    else
-                        REPLY_INFO(C_DIM "       API %d, KHook %.12s, " C_OK "stable tier" C_DIM " (no KHook hooks of its own)",
-                                   p->apiVersion, api->GetKHookCommit());
-                }
-                else
-                {
-                    REPLY_INFO(C_DIM "       API %d " C_WARN "(built against an older SDK)", p->apiVersion);
-                }
             }
         }
 
@@ -321,15 +303,22 @@ namespace commands {
                     REPLY_INFO("  " C_LABEL "Author: " C_NAME "%s", api->GetAuthor());
                     REPLY_INFO("  " C_LABEL "Description: " C_NAME "%s", api->GetDescription());
                     REPLY_INFO("  " C_LABEL "Path: " C_DIM "%s", p->path.c_str());
-                    REPLY_INFO("  " C_LABEL "Plugin API: " C_NAME "%d", p->apiVersion);
+                    // API 2 plugins say what they were built against; the tier
+                    // tells the admin whether an engine or KHook change means a
+                    // rebuild of this plugin or only of the core.
                     if (p->apiVersion >= 2)
                     {
                         const int rawHooks = api->GetRawHookCount();
+                        REPLY_INFO("  " C_LABEL "Plugin API: " C_NAME "%d", p->apiVersion);
                         REPLY_INFO("  " C_LABEL "KHook: " C_DIM "%s", api->GetKHookCommit());
                         if (rawHooks)
-                            REPLY_INFO("  " C_LABEL "Own KHook hooks: " C_NAME "%d " C_WARN "(raw tier)", rawHooks);
+                            REPLY_INFO("  " C_LABEL "Own KHook hooks: " C_NAME "%d " C_WARN "(raw tier: rebuild on a KHook or engine change)", rawHooks);
                         else
                             REPLY_INFO("  " C_LABEL "Own KHook hooks: " C_NAME "0 " C_OK "(stable tier)");
+                    }
+                    else
+                    {
+                        REPLY_INFO("  " C_LABEL "Plugin API: " C_NAME "%d " C_WARN "(built against an older SDK)", p->apiVersion);
                     }
                     std::string ifaces;
                     for (const auto& name : p->ifaces)
