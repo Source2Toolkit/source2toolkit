@@ -27,10 +27,9 @@ fi
 
 export GITHUB_SHA_SHORT="$(git rev-parse --short HEAD)"
 
-### --- Download HL2SDK-CS2 + Metamod-Source -------------------------------
+### --- Download Source2Toolkit-SDK + Metamod-Source ----------------------
 SDK_DIR="/tmp/sdk"
 SOURCE2TOOLKITSDK_DIR="$SDK_DIR/source2toolkit-sdk"
-HL2SDK_DIR="$SDK_DIR/hl2sdk-cs2"
 MMSOURCE_DIR="$SDK_DIR/metamod-source"
 CSGO_PROTO_DIR="$SDK_DIR/Protobufs"
 
@@ -40,17 +39,19 @@ mkdir -p "$SDK_DIR"
 
 echo "=== Downloading Source2Toolkit-SDK ==="
 git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git "$SOURCE2TOOLKITSDK_DIR"
+# s2sdk is the SDK's vendor/s2sdk submodule, at the commit the SDK pins.
+S2SDK_DIR="$SOURCE2TOOLKITSDK_DIR/vendor/s2sdk"
 
-echo "=== Downloading HL2SDK-CS2 ==="
-# HL2SDK_REF pins a commit when the head of cs2 does not build; empty = the
-# head of the branch.
-HL2SDK_REF="${HL2SDK_REF-}"
-git clone --recursive --branch cs2 --single-branch https://github.com/alliedmodders/hl2sdk.git "$HL2SDK_DIR"
-if [ -n "$HL2SDK_REF" ]; then
-  echo "=== Pinning HL2SDK-CS2 to $HL2SDK_REF ==="
-  git -C "$HL2SDK_DIR" checkout -q "$HL2SDK_REF"
-  git -C "$HL2SDK_DIR" submodule update -q --init --recursive
+# S2SDK_REF moves it to another commit when the pinned one does not build;
+# empty = the pin.
+S2SDK_REF="${S2SDK_REF-}"
+if [ -n "$S2SDK_REF" ]; then
+  echo "=== Moving s2sdk to $S2SDK_REF ==="
+  git -C "$S2SDK_DIR" fetch -q origin "$S2SDK_REF"
+  git -C "$S2SDK_DIR" checkout -q FETCH_HEAD
+  git -C "$S2SDK_DIR" submodule update -q --init --recursive
 fi
+echo "s2sdk: $(git -C "$S2SDK_DIR" log -1 --format='%h %s')"
 
 echo "=== Downloading Metamod-Source ==="
 git clone --recursive --branch master --single-branch https://github.com/alliedmodders/metamod-source.git "$MMSOURCE_DIR"
@@ -70,12 +71,12 @@ git clone --recursive https://github.com/SteamDatabase/Protobufs "$CSGO_PROTO_DI
 
 ### --- Export env vars for CMake ------------------------------------------
 export SOURCE2TOOLKIT_SDK="$SOURCE2TOOLKITSDK_DIR"
-export HL2SDKCS2="$HL2SDK_DIR"
+export S2SDK="$S2SDK_DIR"
 export MMSOURCE_DEV="$MMSOURCE_DIR"
 export CSGO_PROTO="$CSGO_PROTO_DIR/csgo"
 
 echo "Using SOURCE2TOOLKIT_SDK=$SOURCE2TOOLKIT_SDK"
-echo "Using HL2SDKCS2=$HL2SDKCS2"
+echo "Using S2SDK=$S2SDK"
 echo "Using MMSOURCE_DEV=$MMSOURCE_DEV"
 echo "Using CSGO_PROTO=$CSGO_PROTO"
 

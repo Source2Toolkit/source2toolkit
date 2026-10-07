@@ -40,6 +40,14 @@ SdkHelpers = builder.Eval(os.path.join(hl2sdk_manifests, 'SdkHelpers.ambuild'), 
   'Project': 'metamod'
 })
 
+# s2sdk carries mathlib/AMBuilder, and hl2sdk-manifests builds any SDK library
+# it finds an AMBuilder for -- with this project's compiler and flags, which
+# that code does not compile under -- and links it ahead of the prebuilt
+# lib/*/mathlib the manifest lists anyway. Keep to the prebuilt one, as with
+# hl2sdk.
+type(SdkHelpers).configureCxx.__globals__['SdkTarget'].findLibrary = \
+  staticmethod(lambda context, sdk, cxx, name: None)
+
 # The SDK's own build helper, pulled in by absolute path for the same reason
 # SdkHelpers is: it lives outside this plugin's source tree.
 ToolkitSdk = builder.Eval(os.path.join(toolkit_sdk_root, 'SdkPlugin.ambuild'), {})
@@ -108,6 +116,15 @@ class MMSPluginConfig(object):
       sdk_path = os.path.join(builder.options.hl2sdk_root, dir_name)
       if os.path.exists(sdk_path):
         return sdk_path
+    if sdk_name == 'cs2':
+      # s2sdk (formerly hl2sdk's cs2 branch): the first of these that is set wins.
+      for env in ['S2SDK_CS2', 'S2SDKCS2', 'S2SDK', 'HL2SDK_CS2', 'HL2SDKCS2']:
+        if os.path.isdir(os.environ.get(env, '')):
+          return os.environ[env]
+      # Else the Source2Toolkit SDK's own vendor/s2sdk submodule.
+      vendored = os.path.join(toolkit_sdk_root, 'vendor', 's2sdk')
+      if os.path.isfile(os.path.join(vendored, 'public', 'eiface.h')):
+        return vendored
     return ResolveEnvPath('HL2SDK{}'.format(sdk_name.upper()), dir_name)
 
   def detectSDKs(self):
