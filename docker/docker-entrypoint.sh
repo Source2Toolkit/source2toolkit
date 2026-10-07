@@ -67,7 +67,7 @@ if [ "$CORE_KHOOK" != "$SDK_KHOOK" ]; then
 fi
 
 echo "=== Downloading Protobufs ==="
-git clone --recursive https://github.com/SteamDatabase/Protobufs "$CSGO_PROTO_DIR"
+git clone --recursive https://github.com/SteamTracking/Protobufs "$CSGO_PROTO_DIR"
 
 ### --- Export env vars for CMake ------------------------------------------
 export SOURCE2TOOLKIT_SDK="$SOURCE2TOOLKITSDK_DIR"
