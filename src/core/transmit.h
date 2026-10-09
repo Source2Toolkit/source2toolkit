@@ -52,35 +52,9 @@
 
 namespace transmit
 {
-    /* =========================
-    CCheckTransmitInfo, in full
-    ========================= */
-
-    /// hl2sdk's CCheckTransmitInfo stops after the first two pointers, and even
-    /// those are wrong: the second one is not m_pTransmitAlways. This is the
-    /// layout as it is in the engine (CS2Fixes / ModSharp reversed it the
-    /// same way), 584 bytes.
-    struct VisInfoFull
-    {
-        uint32_t m_uVisBitsBufSize;
-        SpawnGroupHandle_t m_SpawnGroupHandle;
-        CBitVec<4096> m_VisBits;
-    };
-    static_assert(sizeof(VisInfoFull) == 520, "VisInfoFull layout");
-
-    class CCheckTransmitInfoFull
-    {
-    public:
-        CBitVec<MAX_EDICTS>* m_pTransmitEntity;     // entities sent this tick
-        CBitVec<MAX_EDICTS>* m_pTransmitNonPlayers; // entities the client keeps track of without receiving them
-        CBitVec<MAX_EDICTS>* m_pTransmitOutOfPVS;   // entities that left the PVS but still get a delta
-        CBitVec<MAX_EDICTS>* m_pTransmitAlways;     // HLTV / replay only, nullptr otherwise
-        CUtlVector<CPlayerSlot> m_vecTargetSlots;
-        VisInfoFull m_VisInfo;
-        CPlayerSlot m_nPlayerSlot;
-        bool m_bFullUpdate;
-    };
-    static_assert(sizeof(CCheckTransmitInfoFull) == 584, "CCheckTransmitInfoFull layout");
+    /// s2sdk's CCheckTransmitInfo (checktransmitinfo.h) is the engine's full
+    /// layout; checked here so a change there shows up at compile time.
+    static_assert(sizeof(CCheckTransmitInfo) == 584, "CCheckTransmitInfo layout");
 
     /* =========================
     The view a hook handler gets
@@ -99,11 +73,11 @@ namespace transmit
         void AllowTransmit(CEntityInstance* entity) override;
 
         CBitVec<MAX_EDICTS>* GetTransmitEntity() override { return m_pInfo->m_pTransmitEntity; }
-        CBitVec<MAX_EDICTS>* GetTransmitNonPlayers() override { return m_pInfo->m_pTransmitNonPlayers; }
+        CBitVec<MAX_EDICTS>* GetTransmitNonPlayers() override { return m_pInfo->m_pNonTransmitEntity; }
         CBitVec<MAX_EDICTS>* GetTransmitOutOfPVS() override { return m_pInfo->m_pTransmitOutOfPVS; }
         CBitVec<MAX_EDICTS>* GetTransmitAlways() override { return m_pInfo->m_pTransmitAlways; }
 
-        CCheckTransmitInfoFull* m_pInfo = nullptr;
+        CCheckTransmitInfo* m_pInfo = nullptr;
     };
 
     /* =========================

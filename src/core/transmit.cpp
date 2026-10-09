@@ -93,10 +93,10 @@ namespace transmit
         /// entities the client keeps a record of. Just clearing the first one
         /// makes the client forget the entity, and it then crashes with
         /// "missing client entity" when the entity is sent again.
-        void Block(CCheckTransmitInfoFull* info, int index)
+        void Block(CCheckTransmitInfo* info, int index)
         {
             info->m_pTransmitEntity->Clear(index);
-            info->m_pTransmitNonPlayers->Set(index);
+            info->m_pNonTransmitEntity->Set(index);
         }
     }
 
@@ -376,8 +376,8 @@ namespace transmit
 
         for (int i = 0; i < infoCount && viewCount < ABSOLUTE_PLAYER_LIMIT; i++)
         {
-            auto* info = reinterpret_cast<CCheckTransmitInfoFull*>(ppInfoList[i]);
-            if (!info || !info->m_pTransmitEntity || !info->m_pTransmitNonPlayers)
+            auto* info = reinterpret_cast<CCheckTransmitInfo*>(ppInfoList[i]);
+            if (!info || !info->m_pTransmitEntity || !info->m_pNonTransmitEntity)
                 continue;
 
             m_views[viewCount].m_pInfo = info;
