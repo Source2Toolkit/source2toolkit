@@ -11,7 +11,8 @@
     "CCSPointScriptEntity::ScriptComponent",
     "CNetworkGameServer::ClientList",
     "CTakeDamageInfo::HitGroup",
-    "GameEntitySystem"
+    "*::m_*",
+    "*::sizeof"
   ],
 
   "class_aliases": {

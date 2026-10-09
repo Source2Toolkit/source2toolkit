@@ -81,3 +81,4 @@ Windows: the dedicated server console is switched to UTF-8 at load, so names wit
 gamedata: Windows offsets for all 17 interface virtual hooks (GameFrame, ClientCommand, CheckTransmit, FireEvent, PostEventAbstract, StartupServer, SendNetMessage, ...), each checked in the Windows binaries; no hook falls back to the compiled-in interface index any more.
 Rebuild against SteamDatabase/Protobufs with its per-game descriptor.proto (bd8f82d); no code changes.
 toolkit list prints one line per plugin; plugin API, KHook commit and hook tier moved to toolkit info <id> (which now also flags plugins built against an older SDK).
+Built against alliedmodders/s2sdk cs2 with its CMake support: the entity system comes from s2sdk's GameEntitySystem() (the GameEntitySystem gamedata offset is gone), the game protobufs from s2sdk's own protos (no CSGO_PROTO).

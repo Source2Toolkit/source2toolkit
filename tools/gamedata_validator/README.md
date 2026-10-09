@@ -45,7 +45,9 @@ Either platform alone works too; the other is reported as not checked.
 - `multi_match_signatures` -- signatures that are meant to match many places
   (`NetworkVar::StateChanged` is compared against every NetworkVar wrapper),
   with the reason; one or more matches is good for them.
-- `field_offsets` -- offsets that are struct fields, not vtable indices.
+- `field_offsets` -- offsets that are struct fields, not vtable indices. Names
+  or `fnmatch` patterns: `*::m_*` and `*::sizeof` cover plugin gamedata
+  (e.g. FUNPLAY's `CEntityWriteInfo::m_pBuf`) that follows the `m_` naming.
 - `class_aliases` -- the class whose vtable an offset is checked against, when
   the gamedata name is an interface (`ISource2GameClients` ->
   `CSource2GameClients`). An offset on a derived class belongs under that

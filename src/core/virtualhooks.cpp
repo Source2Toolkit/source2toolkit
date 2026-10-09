@@ -311,9 +311,7 @@ namespace virtualhooks
         // entity system for the next map, and CS2Fixes refreshes it on every
         // StartupServer for the same reason. Keeping the first one would mean
         // a stale pointer and listeners attached to a system nothing uses.
-        auto* pEntitySystem = *DynLibUtils::CMemory(g_pGameResourceServiceServer)
-                                   .Offset(shared::g_pGameConfig->GetOffset("GameEntitySystem"))
-                                   .RCast<CGameEntitySystem**>();
+        CGameEntitySystem* pEntitySystem = GameEntitySystem();
 
         if (pEntitySystem && pEntitySystem != shared::g_pEntitySystem)
         {

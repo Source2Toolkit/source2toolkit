@@ -31,7 +31,6 @@ export GITHUB_SHA_SHORT="$(git rev-parse --short HEAD)"
 SDK_DIR="/tmp/sdk"
 SOURCE2TOOLKITSDK_DIR="$SDK_DIR/source2toolkit-sdk"
 MMSOURCE_DIR="$SDK_DIR/metamod-source"
-CSGO_PROTO_DIR="$SDK_DIR/Protobufs"
 
 echo "=== Preparing temporary SDK directory ==="
 rm -rf "$SDK_DIR"
@@ -66,19 +65,14 @@ if [ "$CORE_KHOOK" != "$SDK_KHOOK" ]; then
   exit 1
 fi
 
-echo "=== Downloading Protobufs ==="
-git clone --recursive https://github.com/SteamTracking/Protobufs "$CSGO_PROTO_DIR"
-
 ### --- Export env vars for CMake ------------------------------------------
 export SOURCE2TOOLKIT_SDK="$SOURCE2TOOLKITSDK_DIR"
 export S2SDK="$S2SDK_DIR"
 export MMSOURCE_DEV="$MMSOURCE_DIR"
-export CSGO_PROTO="$CSGO_PROTO_DIR/csgo"
 
 echo "Using SOURCE2TOOLKIT_SDK=$SOURCE2TOOLKIT_SDK"
 echo "Using S2SDK=$S2SDK"
 echo "Using MMSOURCE_DEV=$MMSOURCE_DEV"
-echo "Using CSGO_PROTO=$CSGO_PROTO"
 
 ### --- Build ---------------------------------------------------------------
 echo "=== Starting build ==="

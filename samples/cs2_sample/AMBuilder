@@ -18,8 +18,7 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'src'),
   ]
 
-  binary.custom = [builder.tools.Protoc(protoc = sdk_target.protoc,
-                                        sources = ToolkitSdk.ProtoSources())]
+  binary.custom = [ToolkitSdk.Protoc(builder, sdk_target)]
 
   # Export only CreateInterface -- the toolkit finds the plugin through it, and
   # nothing else should leak out of the binary.

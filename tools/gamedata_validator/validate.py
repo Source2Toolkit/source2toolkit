@@ -19,6 +19,7 @@ Modelled on swiftly-solution/gamedata-validator -- see README.md.
 
 import argparse
 import datetime
+import fnmatch
 import json
 import os
 import sys
@@ -139,7 +140,7 @@ def check_offset(libs, plat, name, offsets, cfg, previous):
     value = offsets.get(plat)
     if not isinstance(value, int):
         return {'status': NONE}
-    if name in cfg['field_offsets'] or '::' not in name:
+    if '::' not in name or any(fnmatch.fnmatchcase(name, p) for p in cfg['field_offsets']):
         return {'status': UNCHECKED, 'detail': 'field offset', 'value': value}
     cls = name.split('::', 1)[0]
     cls = cfg['class_aliases'].get(cls, cls)
