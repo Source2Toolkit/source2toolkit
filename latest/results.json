@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T01:40:56+00:00",
+  "generated_at": "2026-10-09T18:06:39+00:00",
   "build": {
     "buildid": "25815307",
     "linux_manifest": "8144769780027006476",
@@ -1264,20 +1264,6 @@
         "matches": 1,
         "address": "0x179bd00",
         "status": "ok"
-      }
-    },
-    {
-      "name": "GameEntitySystem",
-      "kind": "offset",
-      "windows": {
-        "status": "unchecked",
-        "detail": "field offset",
-        "value": 88
-      },
-      "linux": {
-        "status": "unchecked",
-        "detail": "field offset",
-        "value": 80
       }
     },
     {

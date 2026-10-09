@@ -1,11 +1,11 @@
 # Gamedata validation
 
-CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manifest `571072184844314041` · 2026-10-09T01:40:56+00:00
+CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manifest `571072184844314041` · 2026-10-09T18:06:39+00:00
 
 | | Windows | Linux |
 |---|---|---|
 | Signatures | 🟢 67 | 🟢 67 |
-| Offsets | 🟢 37 ⚪ 4 | 🟢 37 ⚪ 4 |
+| Offsets | 🟢 37 ⚪ 3 | 🟢 37 ⚪ 3 |
 
 ## Everything resolves
 
@@ -96,7 +96,6 @@ CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manife
 - ⚪⚪ `CTakeDamageInfo::HitGroup`
 - 🟢🟢 `Cmd_ExecuteCommand`
 - 🟢🟢 `DispatchParticleEffect`
-- ⚪⚪ `GameEntitySystem`
 - 🟢🟢 `GetWeaponCSDataFromKey`
 - 🟢🟢 `ICvar::DispatchConCommand` — W 20/46 · L 20/46
 - 🟢🟢 `IGameEventManager2::FireEvent` — W 7/16 · L 8/17
