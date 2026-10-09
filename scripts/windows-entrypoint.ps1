@@ -63,7 +63,6 @@ Write-Host "MSVC loaded successfully"
 ### --- Clone SDKs ------------------------------------------------------------
 $SDK_DIR = "$env:TEMP\sdk"
 $SOURCE2TOOLKITSDK_DIR = "$SDK_DIR\source2toolkit-sdk"
-$HL2SDK_DIR = "$SDK_DIR\hl2sdk-cs2"
 $MMSOURCE_DIR = "$SDK_DIR\metamod-source"
 
 Write-Host "=== Preparing temporary SDK directory ==="
@@ -73,16 +72,19 @@ New-Item -ItemType Directory -Force $SDK_DIR | Out-Null
 Write-Host "=== Downloading Source2Toolkit-SDK ==="
 git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git $SOURCE2TOOLKITSDK_DIR
 
-Write-Host "=== Downloading HL2SDK-CS2 ==="
-# HL2SDK_REF pins a commit when the head of cs2 does not build; empty = the
-# head of the branch.
-$HL2SDK_REF = if ($null -ne $env:HL2SDK_REF) { $env:HL2SDK_REF } else { "" }
-git clone --recursive --branch cs2 --single-branch https://github.com/alliedmodders/hl2sdk.git $HL2SDK_DIR
-if ($HL2SDK_REF) {
-    Write-Host "=== Pinning HL2SDK-CS2 to $HL2SDK_REF ==="
-    git -C $HL2SDK_DIR checkout -q $HL2SDK_REF
-    git -C $HL2SDK_DIR submodule update -q --init --recursive
+# s2sdk is the SDK's vendor/s2sdk submodule, at the commit the SDK pins.
+$S2SDK_DIR = "$SOURCE2TOOLKITSDK_DIR\vendor\s2sdk"
+
+# S2SDK_REF moves it to another commit when the pinned one does not build;
+# empty = the pin.
+$S2SDK_REF = if ($null -ne $env:S2SDK_REF) { $env:S2SDK_REF } else { "" }
+if ($S2SDK_REF) {
+    Write-Host "=== Moving s2sdk to $S2SDK_REF ==="
+    git -C $S2SDK_DIR fetch -q origin $S2SDK_REF
+    git -C $S2SDK_DIR checkout -q FETCH_HEAD
+    git -C $S2SDK_DIR submodule update -q --init --recursive
 }
+Write-Host "s2sdk: $(git -C $S2SDK_DIR log -1 --format='%h %s')"
 
 Write-Host "=== Downloading Metamod-Source ==="
 git clone --recursive --branch master --single-branch https://github.com/alliedmodders/metamod-source.git $MMSOURCE_DIR
@@ -98,10 +100,8 @@ if ($CORE_KHOOK -ne $SDK_KHOOK) {
 
 ### --- Export env vars for CMake ---------------------------------------------
 $env:SOURCE2TOOLKIT_SDK = $SOURCE2TOOLKITSDK_DIR
-$env:HL2SDKCS2 = $HL2SDK_DIR
 $env:MMSOURCE_DEV = $MMSOURCE_DIR
 
-Write-Host "Using HL2SDKCS2=$env:HL2SDKCS2"
 Write-Host "Using MMSOURCE_DEV=$env:MMSOURCE_DEV"
 
 ### --- Build -----------------------------------------------------------------
