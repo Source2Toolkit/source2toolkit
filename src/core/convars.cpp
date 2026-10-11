@@ -33,8 +33,9 @@
  *
  * Project: Source2Toolkit
  */
-#include "hookid.h"
 #include "convars.h"
+
+#include "hookid.h"
 #include "pluginapi.h"
 #include "shared.h"
 #include "utils/log.h"

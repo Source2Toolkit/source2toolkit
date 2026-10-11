@@ -12,11 +12,11 @@
  */
 #pragma once
 
+#include <source2toolkit/IToolkitTypes.h>
+
 #include <algorithm>
 #include <utility>
 #include <vector>
-
-#include "source2toolkit/IToolkitTypes.h"
 
 namespace hookid
 {

@@ -9,9 +9,9 @@
  * Project: Source2Toolkit
  */
 #include "core/paths.h"
-#include "core/pluginmanager.h"
-
 #include "utils/paths.h"
+
+#include "core/pluginmanager.h"
 #include "utils/log.h"
 
 #include <filesystem>

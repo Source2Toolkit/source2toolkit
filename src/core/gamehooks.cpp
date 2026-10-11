@@ -34,6 +34,7 @@
  * Project: Source2Toolkit
  */
 #include "gamehooks.h"
+
 #include "hookid.h"
 
 #include <algorithm>

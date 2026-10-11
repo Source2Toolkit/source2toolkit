@@ -33,11 +33,13 @@
  *
  * Project: Source2Toolkit
  */
-#include "utils/log.h"
-#include <cstring>
-#include "plugin.h"
 #include "gameconfig.h"
+
 #include "module.h"
+#include "plugin.h"
+#include "utils/log.h"
+
+#include <cstring>
 #include <fstream>
 
 CGameConfig::CGameConfig(const std::string& path) { m_sPath = path; }

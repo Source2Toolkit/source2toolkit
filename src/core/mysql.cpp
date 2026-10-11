@@ -34,6 +34,7 @@
  * Project: Source2Toolkit
  */
 #include "mysql.h"
+
 #include "pluginapi.h"
 #include "utils/log.h"
 

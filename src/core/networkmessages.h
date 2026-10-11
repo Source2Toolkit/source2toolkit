@@ -37,7 +37,7 @@
 #include "hookid.h"
 #include "shared.h"
 
-#include "source2toolkit/IToolkitNetworkMessages.h"
+#include <source2toolkit/IToolkitNetworkMessages.h>
 
 #include <unordered_map>
 

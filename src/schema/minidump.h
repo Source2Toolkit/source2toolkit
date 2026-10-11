@@ -1,8 +1,8 @@
-﻿//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
 //
-// Purpose:
+// Purpose: Minidump writing and crash catching helpers exported by tier0
 //
-//=============================================================================//
+//=============================================================================
 
 #ifndef MINIDUMP_H
 #define MINIDUMP_H
@@ -10,8 +10,8 @@
 #pragma once
 #endif
 
-#include "tier0/memalloc.h"
-#include "tier0/platform.h"
+#include <tier0/memalloc.h>
+#include <tier0/platform.h>
 
 // Set prefix to use for minidump files.  If you don't set one, it is defaulted for you,
 // using the current module name

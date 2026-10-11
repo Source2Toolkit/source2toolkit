@@ -35,11 +35,11 @@
  */
 #include "patches.h"
 
-#include "source2toolkit/utils/plat.h"
-
 #include "shared.h"
-#include "dynlibutils/module.hpp"
 #include "utils/log.h"
+
+#include <dynlibutils/module.hpp>
+#include <source2toolkit/utils/plat.h>
 
 namespace patches
 {

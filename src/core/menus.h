@@ -34,9 +34,8 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "source2toolkit/IToolkitMenus.h"
-
-#include "playerslot.h"
+#include <playerslot.h>
+#include <source2toolkit/IToolkitMenus.h>
 
 #include <memory>
 #include <unordered_map>

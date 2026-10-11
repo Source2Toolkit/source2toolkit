@@ -35,7 +35,8 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitSounds.h"
+
+#include <source2toolkit/IToolkitSounds.h>
 
 #include <deque>
 #include <memory>

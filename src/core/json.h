@@ -39,12 +39,11 @@
 
 #pragma once
 
+#include <nlohmann/json.hpp>
+#include <source2toolkit/IToolkitJSON.h>
+
 #include <deque>
 #include <string>
-
-#include <nlohmann/json.hpp>
-
-#include "source2toolkit/IToolkitJSON.h"
 
 namespace json
 {

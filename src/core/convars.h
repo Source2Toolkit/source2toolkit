@@ -35,7 +35,8 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitConVars.h"
+
+#include <source2toolkit/IToolkitConVars.h>
 
 #include <vector>
 

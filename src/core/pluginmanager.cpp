@@ -34,35 +34,35 @@
  * Project: Source2Toolkit
  */
 #include "pluginmanager.h"
+
+#include "commands.h"
+#include "convars.h"
+#include "core/gamehooks.h"
+#include "core/http.h"
+#include "core/menus.h"
+#include "core/mysql.h"
+#include "core/networkmessages.h"
+#include "core/permissions.h"
+#include "core/plugin.h"
+#include "core/scheduler.h"
+#include "core/shared.h"
+#include "customhud.h"
+#include "entities.h"
+#include "events.h"
+#include "pluginapi.h"
+#include "scripts.h"
 #include "slowguard.h"
+#include "sounds.h"
+#include "transmit.h"
+#include "utils/log.h"
+#include "utils/paths.h"
+
+#include <source2toolkit/IToolkitApi.h>
+#include <source2toolkit/IToolkitPlugin.h>
+
 #include <algorithm>
 #include <cstring>
 #include <unordered_map>
-
-#include "commands.h"
-#include "customhud.h"
-#include "sounds.h"
-#include "transmit.h"
-#include "scripts.h"
-#include "convars.h"
-#include "events.h"
-#include "entities.h"
-
-#include "source2toolkit/IToolkitApi.h"
-#include "source2toolkit/IToolkitPlugin.h"
-
-#include "pluginapi.h"
-#include "core/shared.h"
-#include "core/plugin.h"
-#include "utils/log.h"
-#include "utils/paths.h"
-#include "core/scheduler.h"
-#include "core/networkmessages.h"
-#include "core/http.h"
-#include "core/mysql.h"
-#include "core/menus.h"
-#include "core/gamehooks.h"
-#include "core/permissions.h"
 
 // Only the file watch is Linux-only; networkmessages.h above is not, every
 // unload path below calls into it.

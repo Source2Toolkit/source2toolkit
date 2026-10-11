@@ -35,9 +35,9 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitCustomHud.h"
 
-#include "ehandle.h"
+#include <ehandle.h>
+#include <source2toolkit/IToolkitCustomHud.h>
 
 #include <vector>
 

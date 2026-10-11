@@ -35,11 +35,11 @@
  */
 #pragma once
 
-#include <vector>
-#include <string>
-#include <memory>
+#include <source2toolkit/IToolkitApi.h>
 
-#include "source2toolkit/IToolkitApi.h"
+#include <memory>
+#include <string>
+#include <vector>
 
 struct ToolkitPlugin;
 

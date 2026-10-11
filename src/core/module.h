@@ -34,10 +34,9 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "source2toolkit/IToolkitModule.h"
-
-#include "dynlibutils/module.hpp"
-#include "dynlibutils/memaddr.hpp"
+#include <dynlibutils/memaddr.hpp>
+#include <dynlibutils/module.hpp>
+#include <source2toolkit/IToolkitModule.h>
 
 #include <string>
 #include <string_view>

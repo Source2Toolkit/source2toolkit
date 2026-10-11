@@ -35,10 +35,10 @@
  */
 #pragma once
 
+#include <source2toolkit/IToolkitGameHooks.h>
+
 #include <memory>
 #include <vector>
-
-#include "source2toolkit/IToolkitGameHooks.h"
 
 namespace gamehooks
 {

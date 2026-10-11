@@ -36,9 +36,10 @@
 #pragma once
 
 #include "hookid.h"
-#include <functional>
 
-#include "source2toolkit/IToolkitScheduler.h"
+#include <source2toolkit/IToolkitScheduler.h>
+
+#include <functional>
 
 extern bool g_bHasTicked;
 extern double g_dUniversalTime;

@@ -35,13 +35,13 @@
  */
 #pragma once
 #include "hookid.h"
-#include "virtualhooks.h"
 #include "shared.h"
+#include "virtualhooks.h"
 
-#include "source2toolkit/IToolkitEvents.h"
-#include "source2toolkit/IToolkitPlugin.h"
+#include <igameevents.h>
+#include <source2toolkit/IToolkitEvents.h>
+#include <source2toolkit/IToolkitPlugin.h>
 
-#include "igameevents.h"
 #include <functional>
 
 class IGameEvent;

@@ -1,4 +1,4 @@
-﻿/**
+/**
 * vim: set ts=4 sw=4 tw=99 noet:
  * =============================================================================
  * Source2Toolkit
@@ -39,7 +39,7 @@
 #include "core/gameconfig.h"
 #include "core/shared.h"
 
-#include "dynlibutils/module.hpp"
+#include <dynlibutils/module.hpp>
 
 #include <cstdint>
 

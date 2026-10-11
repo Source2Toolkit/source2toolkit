@@ -35,12 +35,12 @@
  */
 #pragma once
 #include "hookid.h"
-#include "virtualhooks.h"
 #include "shared.h"
+#include "virtualhooks.h"
+
+#include <source2toolkit/IToolkitCommands.h>
 
 #include <functional>
-
-#include "source2toolkit/IToolkitCommands.h"
 
 class CCommand;
 class CCommandContext;

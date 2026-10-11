@@ -35,9 +35,10 @@
  */
 #pragma once
 
+#include <spdlog/fmt/fmt.h>
+#include <spdlog/spdlog.h>
+
 #include <memory>
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/fmt.h"
 
 class log {
 public:

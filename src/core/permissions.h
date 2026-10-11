@@ -36,11 +36,11 @@
 
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitPermissions.h"
 
-#include "const.h"
-#include "playerslot.h"
-#include "steam/steam_gameserver.h"
+#include <const.h>
+#include <playerslot.h>
+#include <source2toolkit/IToolkitPermissions.h>
+#include <steam/steam_gameserver.h>
 
 #include <map>
 #include <optional>

@@ -35,10 +35,10 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitScripts.h"
-#include "source2toolkit/utils/plat.h"
 
-#include "entityhandle.h"
+#include <entityhandle.h>
+#include <source2toolkit/IToolkitScripts.h>
+#include <source2toolkit/utils/plat.h>
 
 #include <string>
 #include <unordered_map>

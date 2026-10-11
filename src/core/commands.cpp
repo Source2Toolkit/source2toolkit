@@ -33,11 +33,10 @@
  *
  * Project: Source2Toolkit
  */
-#include "hookid.h"
 #include "commands.h"
-#include "gamehooks.h"
-#include "slowguard.h"
 
+#include "gamehooks.h"
+#include "hookid.h"
 #include "menus.h"
 #include "permissions.h"
 #include "plugin.h"
@@ -45,12 +44,13 @@
 #include "pluginmanager.h"
 #include "raytrace.h"
 #include "shared.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerPawn.h"
-#include "source2toolkit/IToolkitPlugin.h"
+#include "slowguard.h"
 #include "utils/log.h"
 
-#include "dynlibutils/module.hpp"
+#include <dynlibutils/module.hpp>
+#include <source2toolkit/IToolkitPlugin.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerController.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerPawn.h>
 
 #include <cstdarg>
 

@@ -35,9 +35,10 @@
  */
 #pragma once
 
-#include <cmath>
-#include <algorithm>
 #include <vector.h>
+
+#include <algorithm>
+#include <cmath>
 
 #ifdef _WIN32
 #undef min

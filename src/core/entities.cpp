@@ -41,14 +41,12 @@
 #include "inlinehooks.h"
 #include "shared.h"
 
-#include "source2toolkit/schema/entity/classes/CBaseEntity.h"
-#include "source2toolkit/schema/entity/classes/CBasePlayerController.h"
-#include "source2toolkit/schema/entity/classes/CCSGameRules.h"
-
-#include "source2toolkit/schema/entityio.h"
-
-#include "source2toolkit/utils/plat.h"
-#include "source2toolkit/utils/virtual.h"
+#include <source2toolkit/schema/entity/classes/CBaseEntity.h>
+#include <source2toolkit/schema/entity/classes/CBasePlayerController.h>
+#include <source2toolkit/schema/entity/classes/CCSGameRules.h>
+#include <source2toolkit/schema/entityio.h>
+#include <source2toolkit/utils/plat.h>
+#include <source2toolkit/utils/virtual.h>
 
 #include <algorithm>
 

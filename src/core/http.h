@@ -35,9 +35,9 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitHTTP.h"
 
-#include "steam/steam_gameserver.h"
+#include <source2toolkit/IToolkitHTTP.h>
+#include <steam/steam_gameserver.h>
 
 #include <vector>
 

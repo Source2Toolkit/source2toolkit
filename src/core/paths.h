@@ -25,7 +25,7 @@
  */
 #pragma once
 
-#include "source2toolkit/IToolkitPaths.h"
+#include <source2toolkit/IToolkitPaths.h>
 
 #include <string>
 #include <unordered_map>

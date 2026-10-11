@@ -1,4 +1,4 @@
-﻿/**
+/**
 * vim: set ts=4 sw=4 tw=99 noet:
  * =============================================================================
  * Source2Toolkit
@@ -33,7 +33,12 @@
  *
  * Project: Source2Toolkit
 */
+
+#ifndef NAVPHYSICSINTERFACE_H
+#define NAVPHYSICSINTERFACE_H
+#ifdef _WIN32
 #pragma once
+#endif
 
 #include "gametrace.h"
 
@@ -71,3 +76,5 @@ public:
 	static bool CheckAreaOverlappingEntity(const CCSNavArea *const rArea, const CBaseEntity *const rEntity, bool bExtrudeHullHeight);
 	static void GetEntityWorldSpaceAABB(const CBaseEntity *const rEntity, Vector *pMinsOut, Vector *pMaxsOut);
 };
+
+#endif // NAVPHYSICSINTERFACE_H

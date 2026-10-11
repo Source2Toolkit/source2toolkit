@@ -33,12 +33,13 @@
  *
  * Project: Source2Toolkit
  */
-#include "hookid.h"
-#include "virtualhooks.h"
 #include "events.h"
-#include "slowguard.h"
+
+#include "hookid.h"
 #include "shared.h"
+#include "slowguard.h"
 #include "utils/log.h"
+#include "virtualhooks.h"
 
 namespace events {
     static std::unordered_map<std::string, std::vector<EventEntry> > gameEvents;

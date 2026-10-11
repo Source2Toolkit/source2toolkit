@@ -37,8 +37,8 @@
 
 #include "slowguard.h"
 
-#include "source2toolkit/schema/entity/classes/CCSCustomHudLayout.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
+#include <source2toolkit/schema/entity/classes/CCSCustomHudLayout.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerController.h>
 
 #include <algorithm>
 #include <cstdlib>
