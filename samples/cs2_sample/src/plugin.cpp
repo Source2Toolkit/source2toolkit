@@ -17,8 +17,10 @@
 #include <vector>
 #include "plugin.h"
 
-#include "iserver.h"
-#include "eiface.h"
+#include "engine2/networkgameserverbase.h"
+#include "engine2/inetworkserverservice.h"
+#include "engine2/isource2server.h"
+#include "engine2/ivengineserver2.h"
 
 #include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
 #include "source2toolkit/schema/entity/classes/CCSPlayerController_InGameMoneyServices.h"

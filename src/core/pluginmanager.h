@@ -35,16 +35,18 @@
  */
 #pragma once
 
+#include <engine2/inetworkserverservice.h>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <engine2/networkgameserverbase.h>
 #include <ISmmPluginExt.h>
-#include <vector>
-#include <string>
-#include <memory>
-#include <thread>
-#include <atomic>
-#include <unordered_map>
 
-#include "eiface.h"
-#include "iserver.h"
+#include <atomic>
+#include <memory>
+#include <string>
+#include <thread>
+#include <unordered_map>
+#include <vector>
 
 #ifdef _WIN32
 // WinSock2.h first: Windows.h otherwise pulls in the older winsock.h, and a

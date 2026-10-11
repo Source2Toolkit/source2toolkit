@@ -35,9 +35,10 @@
  */
 #include "shared.h"
 
-#include "icvar.h"
-#include "iserver.h"
-#include "schemasystem.h"
+#include <engine2/inetworkserverservice.h>
+#include <engine2/networkgameserverbase.h>
+#include <icvar.h>
+#include <schemasystem.h>
 
 namespace shared
 {

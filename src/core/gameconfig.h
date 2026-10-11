@@ -34,11 +34,10 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "dynlibutils/module.hpp"
-#include "nlohmann/json.hpp"
-#include "KeyValues.h"
-
-#include "source2toolkit/IToolkitGameConfig.h"
+#include <dynlibutils/module.hpp>
+#include <keyvalues.h>
+#include <nlohmann/json.hpp>
+#include <source2toolkit/IToolkitGameConfig.h>
 
 #include <string>
 #include <unordered_map>

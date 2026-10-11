@@ -34,52 +34,49 @@
  * Project: Source2Toolkit
  */
 #include "pluginapi.h"
-#include "gamehooks.h"
-#include "pluginmanager.h"
-#include "utils/log.h"
 
 #include "addresses.h"
 #include "commands.h"
 #include "convars.h"
+#include "core/paths.h"
+#include "core/scheduler.h"
 #include "customhud.h"
-#include "sounds.h"
-#include "transmit.h"
-#include "permissions.h"
-#include "scripts.h"
+#include "entities.h"
+#include "events.h"
+#include "gamehooks.h"
 #include "gamesystems.h"
 #include "http.h"
 #include "json.h"
-#include "entities.h"
-#include "events.h"
 #include "menus.h"
+#include "module.h"
 #include "mysql.h"
 #include "networkmessages.h"
-#include "plugin.h"
-
-#include "source2toolkit/IToolkitPlugin.h"
-#include "source2toolkit/IToolkitAddresses.h"
-#include "source2toolkit/IToolkitCommands.h"
-#include "source2toolkit/IToolkitConVars.h"
-#include "source2toolkit/IToolkitCustomHud.h"
-#include "source2toolkit/IToolkitSounds.h"
-#include "source2toolkit/IToolkitTransmit.h"
-#include "source2toolkit/IToolkitEntities.h"
-#include "source2toolkit/IToolkitEvents.h"
-#include "source2toolkit/IToolkitGameConfig.h"
-#include "source2toolkit/IToolkitGameSystems.h"
-#include "source2toolkit/IToolkitHTTP.h"
-#include "source2toolkit/IToolkitMenus.h"
-#include "source2toolkit/IToolkitMySQL.h"
-#include "source2toolkit/IToolkitNetworkMessages.h"
-#include "source2toolkit/IToolkitScheduler.h"
-#include "source2toolkit/IToolkitTrace.h"
-
+#include "permissions.h"
 #include "plugin.h"
 #include "pluginmanager.h"
 #include "raytrace.h"
-#include "module.h"
-#include "core/scheduler.h"
-#include "core/paths.h"
+#include "scripts.h"
+#include "sounds.h"
+#include "transmit.h"
+#include "utils/log.h"
+
+#include <source2toolkit/IToolkitAddresses.h>
+#include <source2toolkit/IToolkitCommands.h>
+#include <source2toolkit/IToolkitConVars.h>
+#include <source2toolkit/IToolkitCustomHud.h>
+#include <source2toolkit/IToolkitEntities.h>
+#include <source2toolkit/IToolkitEvents.h>
+#include <source2toolkit/IToolkitGameConfig.h>
+#include <source2toolkit/IToolkitGameSystems.h>
+#include <source2toolkit/IToolkitHTTP.h>
+#include <source2toolkit/IToolkitMenus.h>
+#include <source2toolkit/IToolkitMySQL.h>
+#include <source2toolkit/IToolkitNetworkMessages.h>
+#include <source2toolkit/IToolkitPlugin.h>
+#include <source2toolkit/IToolkitScheduler.h>
+#include <source2toolkit/IToolkitSounds.h>
+#include <source2toolkit/IToolkitTrace.h>
+#include <source2toolkit/IToolkitTransmit.h>
 
 #include <cstring>
 #include <stdarg.h>

@@ -35,15 +35,15 @@
  */
 #pragma once
 #include "hookid.h"
-#include "source2toolkit/IToolkitTransmit.h"
 
-#include "bitvec.h"
-#include "checktransmitinfo.h"
-#include "const.h"
-#include "entity2/entityidentity.h"
-#include "entityhandle.h"
-#include "playerslot.h"
-#include "utlvector.h"
+#include <bitvec.h>
+#include <const.h>
+#include <engine2/isource2server.h>
+#include <entity2/entityidentity.h>
+#include <entityhandle.h>
+#include <playerslot.h>
+#include <source2toolkit/IToolkitTransmit.h>
+#include <utlvector.h>
 
 #include <array>
 #include <cstdint>

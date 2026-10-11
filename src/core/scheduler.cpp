@@ -34,11 +34,13 @@
  * Project: Source2Toolkit
  */
 #include "scheduler.h"
-#include "shared.h"
 
-#include "globalvars.h"
+#include "shared.h"
 #include "slowguard.h"
 #include "tkvprof.h"
+
+#include <engine2/gameshareddefs.h>
+
 #include <algorithm>
 #include <mutex>
 #include <queue>

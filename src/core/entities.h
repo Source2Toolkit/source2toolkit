@@ -36,12 +36,14 @@
 #pragma once
 
 #include "hookid.h"
-#include <vector>
-#include "source2toolkit/IToolkitEntities.h"
-#include "source2toolkit/schema/entityio.h"
 
-#include "eiface.h"
-#include "entitysystem.h"
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <entitysystem.h>
+#include <source2toolkit/IToolkitEntities.h>
+#include <source2toolkit/schema/entityio.h>
+
+#include <vector>
 
 namespace entities {
     class EntitiesManager : public IToolkitEntities {

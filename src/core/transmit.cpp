@@ -38,12 +38,12 @@
 #include "shared.h"
 #include "utils/log.h"
 
-#include "entity2/entityinstance.h"
-#include "entity2/entitysystem.h"
-#include "source2toolkit/schema/entity/classes/CCSObserverPawn.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerPawn.h"
-#include "tier1/strtools.h"
+#include <entity2/entityinstance.h>
+#include <entity2/entitysystem.h>
+#include <source2toolkit/schema/entity/classes/CCSObserverPawn.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerController.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerPawn.h>
+#include <tier0/tier0_strtools.h>
 
 #include <algorithm>
 

@@ -33,24 +33,24 @@
  *
  * Project: Source2Toolkit
  */
-#include "hookid.h"
 #include "scripts.h"
 
 #include "addresses.h"
 #include "commands.h"
 #include "entities.h"
 #include "gameconfig.h"
+#include "hookid.h"
 #include "paths.h"
 #include "shared.h"
 #include "utils/log.h"
 
-#include "dynlibutils/module.hpp"
-#include "entity2/entityinstance.h"
-#include "entity2/entitysystem.h"
-#include "entitykeyvalues.h"
-#include "interfaces/interfaces.h"
-#include "source2toolkit/schema/entity/classes/CBaseEntity.h"
-#include "tier1/convar.h"
+#include <dynlibutils/module.hpp>
+#include <entity2/entityinstance.h>
+#include <entity2/entitysystem.h>
+#include <entitykeyvalues.h>
+#include <interfaces/interfaces.h>
+#include <source2toolkit/schema/entity/classes/CBaseEntity.h>
+#include <tier0/convar.h>
 
 #include <algorithm>
 #include <cstdint>

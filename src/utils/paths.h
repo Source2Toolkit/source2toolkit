@@ -36,7 +36,10 @@
 #pragma once
 
 #include "core/shared.h"
-#include <eiface.h>
+
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+
 #include <string>
 
 namespace paths {

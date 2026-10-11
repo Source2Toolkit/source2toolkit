@@ -39,16 +39,15 @@
 #include "shared.h"
 #include "utils/log.h"
 
-#include "entity2/entityinstance.h"
-#include "igameeventsystem.h"
-#include "networksystem/inetworkmessages.h"
-#include "tier1/generichash.h"
-#include "source2toolkit/schema/netmessages.h"
-#include "source2toolkit/schema/recipientfilter.h"
-#include "source2toolkit/utils/virtual.h"
-
+#include <engine2/igameeventsystem.h>
+#include <entity2/entityinstance.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
+#include <networksystem/inetworkmessages.h>
+#include <source2toolkit/schema/netmessages.h>
+#include <source2toolkit/schema/recipientfilter.h>
+#include <source2toolkit/utils/virtual.h>
+#include <tier0/generichash.h>
 
 #include <algorithm>
 #include <cstring>

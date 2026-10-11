@@ -35,13 +35,12 @@
  */
 #include "networkmessages.h"
 
-#include "igameeventsystem.h"
-#include "networksystem/inetworkmessages.h"
-#include "source2toolkit/schema/netmessages.h"
-#include "source2toolkit/schema/recipientfilter.h"
-
+#include <engine2/igameeventsystem.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
+#include <networksystem/inetworkmessages.h>
+#include <source2toolkit/schema/netmessages.h>
+#include <source2toolkit/schema/recipientfilter.h>
 
 #include <cstring>
 

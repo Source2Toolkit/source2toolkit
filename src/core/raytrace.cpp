@@ -37,15 +37,17 @@
 
 #include "addresses.h"
 #include "commands.h"
-#include "events.h"
-#include "shared.h"
-#include "source2toolkit/utils/plat.h"
 #include "core/scheduler.h"
-#include "utils/vectorextends.h"
-#include "dynlibutils/module.hpp"
-#include "iserver.h"
+#include "events.h"
 #include "schema/navphysicsinterface.h"
-#include "source2toolkit/schema/entity/classes/CBaseEntity.h"
+#include "shared.h"
+#include "utils/vectorextends.h"
+
+#include <dynlibutils/module.hpp>
+#include <engine2/inetworkserverservice.h>
+#include <engine2/networkgameserverbase.h>
+#include <source2toolkit/schema/entity/classes/CBaseEntity.h>
+#include <source2toolkit/utils/plat.h>
 
 namespace raytrace
 {

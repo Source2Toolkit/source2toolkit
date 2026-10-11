@@ -34,16 +34,14 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "source2toolkit/IToolkitAddresses.h"
-
 #include "utils/log.h"
 
-#include "platform.h"
-#include "dynlibutils/module.hpp"
-#include "dynlibutils/memaddr.hpp"
-
-#include "playerslot.h"
-#include "variant.h"
+#include <dynlibutils/memaddr.hpp>
+#include <dynlibutils/module.hpp>
+#include <entity2/variant.h>
+#include <platform.h>
+#include <playerslot.h>
+#include <source2toolkit/IToolkitAddresses.h>
 
 /// Resolves a gamedata signature by its entry name: the pattern and the module
 /// (the entry's "library") both come from the game config.

@@ -34,16 +34,20 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "eiface.h"
-#include "icvar.h"
-#include "schemasystem.h"
-#include "entitysystem.h"
-#include "igameevents.h"
-#include "vector"
 #include "coreconfig.h"
 #include "gameconfig.h"
-#include "igameeventsystem.h"
+
+#include <engine2/igameeventsystem.h>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <entitysystem.h>
+#include <gameentitysystem.h>
+#include <icvar.h>
+#include <igameevents.h>
+#include <schemasystem.h>
+
 #include <memory>
+#include <vector>
 
 class CCSGameRules;
 

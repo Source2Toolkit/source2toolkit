@@ -59,7 +59,7 @@
 #include "networksystem/inetworksystem.h"
 #include "tier0/icommandline.h"
 #include "tier0/memalloc.h"
-#include "tier1/netadr.h"
+#include "tier0/netadr.h"
 
 #if defined(__linux__)
 #include "client/linux/handler/exception_handler.h"

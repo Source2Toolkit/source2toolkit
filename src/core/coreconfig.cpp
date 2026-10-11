@@ -35,10 +35,12 @@
  */
 
 #include "core/coreconfig.h"
+
 #include "utils/log.h"
 
+#include <tier0_strtools.h>
+
 #include <fstream>
-#include <strtools.h>
 
 CCoreConfig::CCoreConfig(const std::string& path) { m_sPath = path; }
 

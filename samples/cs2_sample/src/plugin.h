@@ -68,7 +68,8 @@
 #include "source2toolkit/schema/takedamageresult.h"
 #include "entity2/entitysystem.h"
 #include "igameevents.h"
-#include "eiface.h"
+#include "engine2/isource2server.h"
+#include "engine2/ivengineserver2.h"
 
 // Generated from plugin-metadata.json by tools/version_gen.py -- the metadata
 // below is not written twice.

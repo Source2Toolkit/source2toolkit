@@ -34,15 +34,13 @@
  * Project: Source2Toolkit
  */
 #pragma once
-#include "source2toolkit/IToolkitTrace.h"
-
-#include "source2toolkit/schema/entity/classes/CBaseEntity.h"
-#include "source2toolkit/schema/entity/classes/CCollisionProperty.h"
-
-#include "eiface.h"
-#include "entitysystem.h"
-
-#include "dynlibutils/memaddr.hpp"
+#include <dynlibutils/memaddr.hpp>
+#include <engine2/isource2server.h>
+#include <engine2/ivengineserver2.h>
+#include <entitysystem.h>
+#include <source2toolkit/IToolkitTrace.h>
+#include <source2toolkit/schema/entity/classes/CBaseEntity.h>
+#include <source2toolkit/schema/entity/classes/CCollisionProperty.h>
 
 // CTraceFilterEx now lives in the SDK (IToolkitTrace.h) so plugins calling
 // TraceShapeEx can build one too.

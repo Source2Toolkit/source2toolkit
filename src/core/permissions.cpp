@@ -41,10 +41,9 @@
 #include "utils/log.h"
 #include "utils/paths.h"
 
-#include "tier0/icommandline.h"
-#include "tier1/convar.h"
-
 #include <nlohmann/json.hpp>
+#include <tier0/convar.h>
+#include <tier0/icommandline.h>
 
 #include <algorithm>
 #include <cctype>
