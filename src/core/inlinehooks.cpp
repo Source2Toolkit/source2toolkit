@@ -34,19 +34,21 @@
  * Project: Source2Toolkit
  */
 #include "inlinehooks.h"
-#include "tkvprof.h"
 
 #include "addresses.h"
 #include "commands.h"
+#include "core/scheduler.h"
 #include "events.h"
 #include "networkmessages.h"
 #include "plugin.h"
 #include "shared.h"
-#include "source2toolkit/utils/plat.h"
-#include "core/scheduler.h"
-#include "source2toolkit/schema/serversideclient.h"
-#include "dynlibutils/module.hpp"
-#include "iserver.h"
+#include "tkvprof.h"
+
+#include <dynlibutils/module.hpp>
+#include <engine2/inetworkserverservice.h>
+#include <engine2/networkgameserverbase.h>
+#include <engine2/serversideclientbase.h>
+#include <source2toolkit/utils/plat.h>
 
 #include <unordered_set>
 
@@ -56,8 +58,6 @@ namespace inlinehooks
     std::unordered_map<OutputKey, EntityIOCallbackPair, OutputKeyHash> entityIOListenerStack;
 
     Inlines::Inlines() :
-        // bool INetworkMessageProcessingPreFilter::FilterMessage(const CNetMessage* pData, INetChannel* pChannel)
-        KHOOK_NEW(m_hFilterMessage, this, &Inlines::Hook_FilterMessage, nullptr),
         // void CEntityIOOutput::FireOutputInternal(CEntityInstance* pActivator, CEntityInstance* pCaller, void* variantValue, float delay, void* unk01, void* unk02)
         KHOOK_NEW(m_hFireOutputInternal, this, &Inlines::Hook_FireOutputInternal, nullptr)
     {
@@ -67,42 +67,14 @@ namespace inlinehooks
     {
         // Configure() is what places the detour; an address the scan did not
         // find leaves that hook dormant rather than patching address zero.
-        if (void* pFilterMessage = addresses::toolkitAddresses.FilterMessage.GetPtr())
-            m_hFilterMessage->Configure(pFilterMessage);
-
         if (void* pFireOutputInternal = addresses::toolkitAddresses.FireOutputInternal.GetPtr())
             m_hFireOutputInternal->Configure(pFireOutputInternal);
     }
 
     void Inlines::DestructListeners()
     {
-        delete m_hFilterMessage;
         delete m_hFireOutputInternal;
-        m_hFilterMessage = nullptr;
         m_hFireOutputInternal = nullptr;
-    }
-
-    KHook::Return<bool> Inlines::Hook_FilterMessage(INetworkMessageProcessingPreFilterCustom* pThis, const CNetMessage* pData, INetChannel* pChannel)
-    {
-        TK_VPROF("Source2Toolkit::FilterMessage");
-
-        //  is the pre-filter subobject, not the whole client -- that is
-        // what INetworkMessageProcessingPreFilterCustom's pad-based layout is
-        // for, so the slot can be read without hand-rolling the delta.
-        if (!pThis || !pData)
-            return { KHook::Action::Ignore, true };
-
-        INetworkMessageInternal* pNetMsg = pData->GetNetMessage();
-        if (!pNetMsg)
-            return { KHook::Action::Ignore, true };
-
-        NetMessageInfo_t* pInfo = pNetMsg->GetNetMessageInfo();
-        if (!pInfo)
-            return { KHook::Action::Ignore, true };
-
-        const Action action = networkmessages::DispatchClientHook(pThis->GetPlayerSlot(), pInfo->m_MessageId, const_cast<CNetMessage*>(pData));
-
-        return { action, true };
     }
 
     KHook::Return<void> Inlines::Hook_FireOutputInternal(CEntityIOOutput* pThis, CEntityInstance* pActivator, CEntityInstance* pCaller, void* variantValue, float delay, void* unk01, void* unk02)

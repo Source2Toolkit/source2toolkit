@@ -34,39 +34,40 @@
  * Project: Source2Toolkit
  */
 #include "virtualhooks.h"
-#include "tkvprof.h"
-
-#include "source2toolkit/schema/entity/classes/CBaseEntity.h"
-#include "source2toolkit/schema/entity/classes/CCSCustomHudLayout.h"
-#include "source2toolkit/schema/entity/classes/CCSGameRulesProxy.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
-#include "source2toolkit/schema/entity/enums/ECstrike15UserMessages.h"
-#include "source2toolkit/schema/schema.h"
-#include "source2toolkit/utils/plat.h"
 
 #include "commands.h"
+#include "core/entities.h"
+#include "core/menus.h"
+#include "core/scheduler.h"
 #include "crashhandler.h"
 #include "customhud.h"
-#include "sounds.h"
-#include "transmit.h"
-#include "scripts.h"
-#include "http.h"
 #include "events.h"
+#include "gamehooks.h"
+#include "http.h"
+#include "mysql.h"
 #include "networkmessages.h"
 #include "permissions.h"
 #include "plugin.h"
-#include "shared.h"
-#include "core/scheduler.h"
 #include "pluginmanager.h"
-#include "gamehooks.h"
+#include "scripts.h"
+#include "shared.h"
+#include "sounds.h"
+#include "tkvprof.h"
+#include "transmit.h"
 #include "utils/log.h"
-#include "core/menus.h"
-#include "core/entities.h"
-#include "dynlibutils/module.hpp"
-#include "steam/isteamgameserver.h"
-#include "iserver.h"
-#include "engine/igameeventsystem.h"
-#include "mysql.h"
+
+#include <dynlibutils/module.hpp>
+#include <engine2/igameeventsystem.h>
+#include <engine2/inetworkserverservice.h>
+#include <engine2/networkgameserverbase.h>
+#include <source2toolkit/schema/entity/classes/CBaseEntity.h>
+#include <source2toolkit/schema/entity/classes/CCSCustomHudLayout.h>
+#include <source2toolkit/schema/entity/classes/CCSGameRulesProxy.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerController.h>
+#include <source2toolkit/schema/entity/enums/ECstrike15UserMessages.h>
+#include <source2toolkit/schema/schema.h>
+#include <source2toolkit/utils/plat.h>
+#include <steam/isteamgameserver.h>
 
 namespace virtualhooks
 {
@@ -85,17 +86,15 @@ namespace virtualhooks
         KHOOK_NEW(m_hClientSettingsChanged, &ISource2GameClients::ClientSettingsChanged, this, nullptr, &Virtuals::Hook_ClientSettingsChanged),
         KHOOK_NEW(m_hClientSvcUserMessage, &ISource2GameClients::ClientSvcUserMessage, this, &Virtuals::Hook_ClientSvcUserMessage, nullptr),
         KHOOK_NEW(m_hClientDisconnect, &ISource2GameClients::ClientDisconnect, this, nullptr, &Virtuals::Hook_ClientDisconnect),
-        // Steam only hands its HTTP client over once the API is up, and this
-        // is where that happens -- see http::HTTPManager.
         KHOOK_NEW(m_hSteamAPIActivated, &ISource2Server::GameServerSteamAPIActivated, this, nullptr, &Virtuals::Hook_GameServerSteamAPIActivated),
         KHOOK_NEW(m_hSteamAPIDeactivated, &ISource2Server::GameServerSteamAPIDeactivated, this, &Virtuals::Hook_GameServerSteamAPIDeactivated, nullptr),
-        // PostEventAbstract is overloaded, so the member function pointer has
-        // to be disambiguated explicitly.
+        // PostEventAbstract is overloaded, so the member function pointer has to be disambiguated explicitly.
         KHOOK_NEW(m_hPostEventAbstract, static_cast<void (IGameEventSystem::*)(CSplitScreenSlot, bool, int, const uint64*, INetworkMessageInternal*, const CNetMessage*, unsigned long, NetChannelBufType_t)>(&IGameEventSystem::PostEventAbstract), this, &Virtuals::Hook_PostEventAbstract, nullptr),
         KHOOK_NEW(m_hOnServerGamePostSimulate, &IGameSystem::OnServerGamePostSimulate, this, nullptr, &Virtuals::Hook_OnServerGamePostSimulate),
         KHOOK_NEW(m_hLoadEventsFromFile, &IGameEventManager2::LoadEventsFromFile, this, nullptr, &Virtuals::Hook_LoadEventsFromFile),
         KHOOK_NEW(m_hFireEvent, &IGameEventManager2::FireEvent, this, &Virtuals::Hook_FireEvent, &Virtuals::Hook_FireEventPost),
         KHOOK_NEW(m_hSendNetMessage, &CServerSideClientBase::SendNetMessage, this, &Virtuals::Hook_SendNetMessage, nullptr),
+        KHOOK_NEW(m_hFilterMessage, &INetworkMessageProcessingPreFilter::FilterMessage, this, &Virtuals::Hook_FilterMessage, nullptr),
         KHOOK_NEW(m_hCheckTransmit, &ISource2GameEntities::CheckTransmit, this, nullptr, &Virtuals::Hook_CheckTransmit)
     {
     }
@@ -141,6 +140,7 @@ namespace virtualhooks
         ResolveIndex(m_hLoadEventsFromFile, "IGameEventManager2::LoadEventsFromFile");
         ResolveIndex(m_hFireEvent, "IGameEventManager2::FireEvent");
         ResolveIndex(m_hSendNetMessage, "CServerSideClientBase::SendNetMessage");
+        ResolveIndex(m_hFilterMessage, "INetworkMessageProcessingPreFilter::FilterMessage");
         ResolveIndex(m_hCheckTransmit, "ISource2GameEntities::CheckTransmit");
 
         m_hGameFrame->Add(g_pSource2Server);
@@ -168,12 +168,13 @@ namespace virtualhooks
             m_hFireEvent->AddGlobal(reinterpret_cast<IGameEventManager2*>(&m_pCGameEventManagerVTable));
         }
 
-        // Hooked on the vtable rather than per client, so the recipient comes
-        // from the hooked instance itself -- that is what the per-client
-        // net-message dispatch needs and PostEventAbstract cannot give.
         m_pCServerSideClientVTable = libengine.GetVirtualTableByName("CServerSideClient").GetPtr();
         if (m_pCServerSideClientVTable)
             m_hSendNetMessage->AddGlobal(reinterpret_cast<CServerSideClientBase*>(&m_pCServerSideClientVTable));
+
+        m_pCServerSideClientPreFilterVTable = libengine.GetVirtualTableByBase("CServerSideClient", "INetworkMessageProcessingPreFilter").GetPtr();
+        if (m_pCServerSideClientPreFilterVTable)
+            m_hFilterMessage->AddGlobal(reinterpret_cast<INetworkMessageProcessingPreFilter*>(&m_pCServerSideClientPreFilterVTable));
     }
 
     void Virtuals::DestructListeners()
@@ -205,6 +206,8 @@ namespace virtualhooks
 
         if (m_pCServerSideClientVTable)
             m_hSendNetMessage->RemoveGlobal(reinterpret_cast<CServerSideClientBase*>(&m_pCServerSideClientVTable));
+        if (m_pCServerSideClientPreFilterVTable)
+            m_hFilterMessage->RemoveGlobal(reinterpret_cast<INetworkMessageProcessingPreFilter*>(&m_pCServerSideClientPreFilterVTable));
 
         delete m_hGameFrame;
         delete m_hStartupServer;
@@ -222,6 +225,7 @@ namespace virtualhooks
         delete m_hLoadEventsFromFile;
         delete m_hFireEvent;
         delete m_hSendNetMessage;
+        delete m_hFilterMessage;
         delete m_hCheckTransmit;
 
         m_hGameFrame = nullptr;
@@ -240,11 +244,13 @@ namespace virtualhooks
         m_hLoadEventsFromFile = nullptr;
         m_hFireEvent = nullptr;
         m_hSendNetMessage = nullptr;
+        m_hFilterMessage = nullptr;
         m_hCheckTransmit = nullptr;
 
         m_pCEntityDebugGameSystemVTable = nullptr;
         m_pCGameEventManagerVTable = nullptr;
         m_pCServerSideClientVTable = nullptr;
+        m_pCServerSideClientPreFilterVTable = nullptr;
     }
 
     KHook::Return<void> Virtuals::Hook_GameFrame(ISource2Server* pThis, bool simulating, bool bFirstTick, bool bLastTick)
@@ -643,6 +649,28 @@ namespace virtualhooks
         return { KHook::Action::Ignore, true };
     }
 
+    KHook::Return<bool> Virtuals::Hook_FilterMessage(INetworkMessageProcessingPreFilter* pThis, const CNetMessage* pData, INetChannel* pChannel)
+    {
+        TK_VPROF("Source2Toolkit::FilterMessage");
+
+        // pThis is the client's pre-filter subobject, not the whole client;
+        // static_cast steps back to the CServerSideClientBase around it.
+        if (!pThis || !pData)
+            return { KHook::Action::Ignore, true };
+
+        INetworkMessageInternal* pNetMsg = pData->GetNetMessage();
+        if (!pNetMsg)
+            return { KHook::Action::Ignore, true };
+
+        NetMessageInfo_t* pInfo = pNetMsg->GetNetMessageInfo();
+        if (!pInfo)
+            return { KHook::Action::Ignore, true };
+
+        const Action action = networkmessages::DispatchClientHook(static_cast<CServerSideClientBase*>(pThis)->m_nClientSlot, pInfo->m_MessageId, const_cast<CNetMessage*>(pData));
+
+        return { action, true };
+    }
+
     KHook::Return<bool> Virtuals::Hook_SendNetMessage(CServerSideClientBase* pThis, const CNetMessage* pData, NetChannelBufType_t bufType)
     {
         TK_VPROF("Source2Toolkit::SendNetMessage");
@@ -658,7 +686,7 @@ namespace virtualhooks
         if (!pInfo)
             return { KHook::Action::Ignore, true };
 
-        Action result = networkmessages::DispatchServerInternalHook(pThis->GetPlayerSlot(), pInfo->m_MessageId, const_cast<CNetMessage*>(pData));
+        Action result = networkmessages::DispatchServerInternalHook(pThis->m_nClientSlot, pInfo->m_MessageId, const_cast<CNetMessage*>(pData));
 
         return { result, true };
     }

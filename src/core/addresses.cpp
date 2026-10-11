@@ -71,7 +71,21 @@ namespace addresses
         RESOLVE_SIG("CGameEntitySystem::FindEntityByClassName", toolkitAddresses.FindEntityByClassName);
         RESOLVE_SIG("CGameEntitySystem::FindEntityByName", toolkitAddresses.FindEntityByName);
         RESOLVE_SIG("CTakeDamageInfo::Constructor", toolkitAddresses.CTakeDamageInfo);
-        RESOLVE_SIG("INetworkMessageProcessingPreFilter::FilterMessage", toolkitAddresses.FilterMessage);
+
+        // FilterMessage is the only virtual of CServerSideClient's pre-filter
+        // base; the base's offset comes out of the RTTI (+48 Linux, +8 Windows).
+        {
+            DynLibUtils::CModule libengine(g_pEngineServer);
+            auto pVTable = libengine.GetVirtualTableByBase("CServerSideClient", "INetworkMessageProcessingPreFilter");
+            if (!pVTable)
+            {
+                FP_DEBUG("Failed to find '{}'", "CServerSideClient::INetworkMessageProcessingPreFilter");
+                return false;
+            }
+
+            toolkitAddresses.FilterMessage = DynLibUtils::CMemory(pVTable.RCast<void**>()[0]);
+        }
+
 
         // Called by the SDK's schema helpers (CAttributeList, the grenade
         // projectiles, CBaseEntity::Remove, ...). The helpers call straight

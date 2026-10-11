@@ -37,7 +37,7 @@
 // tier1/convar.h first: iloopmode.h (pulled in by igamesystem.h) uses
 // CSplitScreenSlot in IGameSystem::HandleInputEvent without declaring it, and
 // PostEventAbstract below needs the type too.
-#include "tier1/convar.h"
+#include "tier0/convar.h"
 
 // KHook, via metamod.
 #include "ISmmPlugin.h"
@@ -45,10 +45,13 @@
 
 #include "igameevents.h"
 #include "igamesystem.h"
-#include "eiface.h"
+#include "engine2/isource2server.h"
+#include "engine2/ivengineserver2.h"
+#include "engine2/inetworkserverservice.h"
 #include "entitysystem.h"
-#include "engine/igameeventsystem.h"
-#include "source2toolkit/schema/serversideclient.h"
+#include "gameentitysystem.h"
+#include "engine2/igameeventsystem.h"
+#include "engine2/serversideclientbase.h"
 
 #include "dynlibutils/memaddr.hpp"
 
@@ -79,6 +82,7 @@ namespace virtualhooks {
         KHook::Return<bool> Hook_FireEvent(IGameEventManager2* pThis, IGameEvent* event, bool bDontBroadcast);
         KHook::Return<bool> Hook_FireEventPost(IGameEventManager2* pThis, IGameEvent* event, bool bDontBroadcast);
         KHook::Return<bool> Hook_SendNetMessage(CServerSideClientBase* pThis, const CNetMessage* pData, NetChannelBufType_t bufType);
+        KHook::Return<bool> Hook_FilterMessage(INetworkMessageProcessingPreFilter* pThis, const CNetMessage* pData, INetChannel* pChannel);
         KHook::Return<void> Hook_CheckTransmit(ISource2GameEntities* pThis, CCheckTransmitInfo** ppInfoList, int nInfoCount, CBitVec<16384>& unionTransmitEdicts, CBitVec<16384>& unionTransmitEdicts2, const Entity2Networkable_t** pNetworkables, const uint16* pEntityIndicies, int nEntities);
     protected:
         // KHook hooks only come down in their destructor, so they live behind
@@ -107,6 +111,9 @@ namespace virtualhooks {
         // SendNetMessage is declared on the base, so that is what the member
         // function pointer -- and therefore the hook -- is typed against.
         ToolkitKHook::Virtual<CServerSideClientBase, bool, const CNetMessage*, NetChannelBufType_t>* m_hSendNetMessage = nullptr;
+        // Incoming client messages: the only virtual of CServerSideClient's
+        // pre-filter base, hooked on that base's own vtable.
+        ToolkitKHook::Virtual<INetworkMessageProcessingPreFilter, bool, const CNetMessage*, INetChannel*>* m_hFilterMessage = nullptr;
         // Post only: the engine decides first, the transmit manager then takes
         // hidden entities back out (core/transmit.h).
         ToolkitKHook::Virtual<ISource2GameEntities, void, CCheckTransmitInfo**, int, CBitVec<16384>&, CBitVec<16384>&, const Entity2Networkable_t**, const uint16*, int>* m_hCheckTransmit = nullptr;
@@ -118,6 +125,9 @@ namespace virtualhooks {
         void* m_pCEntityDebugGameSystemVTable = nullptr;
         void* m_pCGameEventManagerVTable = nullptr;
         void* m_pCServerSideClientVTable = nullptr;
+        // CServerSideClient's INetworkMessageProcessingPreFilter vtable, found by
+        // the base's offset in the RTTI (+48 Linux, +8 Windows).
+        void* m_pCServerSideClientPreFilterVTable = nullptr;
     };
 
     class CEntityListener: public IEntityListener {

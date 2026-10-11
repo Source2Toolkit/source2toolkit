@@ -38,15 +38,16 @@
 
 // KHook, via metamod.
 #include "ISmmPlugin.h"
-#include "eiface.h"
+#include "engine2/isource2server.h"
+#include "engine2/ivengineserver2.h"
 #include "entitysystem.h"
-#include "source2toolkit/schema/serversideclient.h"
+#include "networksystem/inetworksystem.h"
 
 #include "dynlibutils/memaddr.hpp"
 
 namespace inlinehooks {
     // Functions hooked at an address a signature scan found, not through a
-    // vtable -- KHook::Member, since both have a .
+    // vtable -- KHook::Member, since they are member functions.
     class Inlines {
     public:
         Inlines();
@@ -54,15 +55,10 @@ namespace inlinehooks {
         void InitListeners();
         void DestructListeners();
     public:
-        KHook::Return<bool> Hook_FilterMessage(INetworkMessageProcessingPreFilterCustom* pThis, const CNetMessage* pData, INetChannel* pChannel);
         KHook::Return<void> Hook_FireOutputInternal(CEntityIOOutput* pThis, CEntityInstance* pActivator, CEntityInstance* pCaller, void* variantValue, float delay, void* unk01, void* unk02);
     protected:
         // KHook hooks only come down in their destructor, so they live behind
         // plain pointers: new in the constructor, delete in DestructListeners().
-        //
-        // FilterMessage sits in a secondary vtable (non-zero offset-to-top), which
-        // a by-name vtable lookup never finds -- hence by signature.
-        KHook::Member<INetworkMessageProcessingPreFilterCustom, bool, const CNetMessage*, INetChannel*>* m_hFilterMessage = nullptr;
         KHook::Member<CEntityIOOutput, void, CEntityInstance*, CEntityInstance*, void*, float, void*, void*>* m_hFireOutputInternal = nullptr;
     };
 
