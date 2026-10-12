@@ -25,32 +25,16 @@ def ResolveToolkitSdk():
 
 toolkit_sdk_root = ResolveToolkitSdk()
 
-# A toolkit plugin never includes a metamod header, so there is no MMSOURCE_DEV
-# here. The manifests come from the SDK's own submodule unless overridden.
-hl2sdk_manifests = builder.options.hl2sdk_manifests
-if not hl2sdk_manifests:
-  hl2sdk_manifests = os.path.join(toolkit_sdk_root, 'vendor', 'hl2sdk-manifests')
-
-if not os.path.isdir(hl2sdk_manifests):
-  raise Exception('Could not find a source copy of HL2SDK manifests -- run '
-                  'git submodule update --init --recursive in the SDK, or pass '
-                  '--hl2sdk-manifests')
-
-SdkHelpers = builder.Eval(os.path.join(hl2sdk_manifests, 'SdkHelpers.ambuild'), {
-  'Project': 'metamod'
-})
-
-# s2sdk carries mathlib/AMBuilder, and hl2sdk-manifests builds any SDK library
-# it finds an AMBuilder for -- with this project's compiler and flags, which
-# that code does not compile under -- and links it ahead of the prebuilt
-# lib/*/mathlib the manifest lists anyway. Keep to the prebuilt one, as with
-# hl2sdk.
-type(SdkHelpers).configureCxx.__globals__['SdkTarget'].findLibrary = \
-  staticmethod(lambda context, sdk, cxx, name: None)
-
-# The SDK's own build helper, pulled in by absolute path for the same reason
-# SdkHelpers is: it lives outside this plugin's source tree.
+# The SDK's own build helper, pulled in by absolute path: it lives outside
+# this plugin's source tree.
 ToolkitSdk = builder.Eval(os.path.join(toolkit_sdk_root, 'SdkPlugin.ambuild'), {})
+
+# s2sdk-manifests' SdkHelpers: what a binary needs from s2sdk (include paths,
+# defines, libraries with the Steam API, protoc), the same lists s2sdk::s2sdk
+# has in CMake. A toolkit plugin never includes a metamod header, so there is
+# no MMSOURCE_DEV here. The manifests come from the SDK's own submodule unless
+# --s2sdk-manifests or S2SDK_MANIFESTS_DIR points elsewhere.
+SdkHelpers = ToolkitSdk.LoadSdkHelpers(builder, builder.options.s2sdk_manifests)
 
 def LoadPluginMetadata():
   path = os.path.join(builder.sourcePath, 'plugin-metadata.json')
@@ -116,15 +100,12 @@ class MMSPluginConfig(object):
       sdk_path = os.path.join(builder.options.hl2sdk_root, dir_name)
       if os.path.exists(sdk_path):
         return sdk_path
-    if sdk_name == 'cs2':
-      # s2sdk (formerly hl2sdk's cs2 branch): the first of these that is set wins.
-      for env in ['S2SDK_CS2', 'S2SDKCS2', 'S2SDK', 'HL2SDK_CS2', 'HL2SDKCS2']:
-        if os.path.isdir(os.environ.get(env, '')):
-          return os.environ[env]
-      # Else the Source2Toolkit SDK's own vendor/s2sdk submodule.
-      vendored = os.path.join(toolkit_sdk_root, 'vendor', 's2sdk')
-      if os.path.isfile(os.path.join(vendored, 'public', 'tier0', 'platform.h')):
-        return vendored
+    # The manifest's environment variables (cs2: S2SDK_CS2, S2SDKCS2, S2SDK,
+    # HL2SDK_CS2, HL2SDKCS2 -- first set wins), else the Source2Toolkit SDK's
+    # own vendor/s2sdk submodule.
+    sdk_path = ToolkitSdk.FindS2Sdk(sdk_name)
+    if sdk_path:
+      return sdk_path
     return ResolveEnvPath('HL2SDK{}'.format(sdk_name.upper()), dir_name)
 
   def detectSDKs(self):
@@ -147,14 +128,12 @@ class MMSPluginConfig(object):
       self.configure_cxx(cxx)
 
   def configure_cxx(self, cxx):
+    # The SDK's defines (platform, stricmp=strcasecmp, ...) and libraries come
+    # from s2sdk-manifests, through SdkHelpers.configureCxx() in ToolkitLibrary().
     if cxx.behavior == 'gcc':
       cxx.defines += [
-        'stricmp=strcasecmp',
-        '_stricmp=strcasecmp',
         '_snprintf=snprintf',
-        '_vsnprintf=vsnprintf',
         'HAVE_STDINT_H',
-        'GNUC',
       ]
       cxx.cflags += [
         '-pipe',
@@ -274,14 +253,14 @@ class MMSPluginConfig(object):
 
     # Platform-specifics
     if cxx.target.platform == 'linux':
-      cxx.defines += ['_LINUX', 'LINUX', 'POSIX', '_FILE_OFFSET_BITS=64']
+      cxx.defines += ['_FILE_OFFSET_BITS=64']
       if cxx.family == 'gcc':
         cxx.linkflags += ['-static-libgcc']
       elif cxx.family == 'clang':
         cxx.linkflags += ['-lgcc_eh']
       cxx.linkflags += ['-static-libstdc++']
     elif cxx.target.platform == 'windows':
-      cxx.defines += ['WIN32', '_WINDOWS']
+      cxx.defines += ['_WINDOWS']
 
   def Library(self, cxx, name):
     binary = cxx.Library(name)
@@ -311,14 +290,16 @@ class MMSPluginConfig(object):
     for other_sdk in self.sdk_manifests:
       cxx.defines += ['SE_{}={}'.format(other_sdk['define'], other_sdk['code'])]
 
+    # Includes, defines and the SDK's own sources -- including the s2sdk
+    # translation units it owns, which is why none are listed here. Its extra
+    # s2sdk include paths go ahead of s2sdk-manifests' ones, as in CMake.
+    ToolkitSdk.AddToBinary(binary, sdk)
+
+    # s2sdk's include paths, defines and libraries (the Steam API among them).
     SdkHelpers.configureCxx(context, binary, sdk)
 
     cxx.cxxincludes += [os.path.join(builder.buildPath, 'versioning')]
     cxx.sourcedeps += self.version_header_deps
-
-    # Includes, defines and the SDK's own sources -- including the hl2sdk
-    # translation units it owns, which is why none are listed here.
-    ToolkitSdk.AddToBinary(binary, sdk)
 
     return binary
 

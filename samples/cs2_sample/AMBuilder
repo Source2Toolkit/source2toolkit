@@ -18,7 +18,8 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'src'),
   ]
 
-  binary.custom = [ToolkitSdk.Protoc(builder, sdk_target)]
+  # The game protobufs (s2sdk_protobufs() in the SDK's CMakeLists.txt).
+  ToolkitSdk.AddProtobufs(builder, binary, sdk_target)
 
   # Export only CreateInterface -- the toolkit finds the plugin through it, and
   # nothing else should leak out of the binary.
