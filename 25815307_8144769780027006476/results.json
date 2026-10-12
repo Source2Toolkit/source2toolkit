@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T18:06:39+00:00",
+  "generated_at": "2026-10-12T15:41:51+00:00",
   "build": {
     "buildid": "25815307",
     "linux_manifest": "8144769780027006476",
@@ -1386,16 +1386,16 @@
     },
     {
       "name": "INetworkMessageProcessingPreFilter::FilterMessage",
-      "kind": "signature",
+      "kind": "offset",
       "windows": {
-        "matches": 1,
-        "address": "0x1800c3cf0",
-        "status": "ok"
+        "status": "unchecked",
+        "detail": "no RTTI for INetworkMessageProcessingPreFilter",
+        "value": 0
       },
       "linux": {
-        "matches": 1,
-        "address": "0x5329d0",
-        "status": "ok"
+        "status": "unchecked",
+        "detail": "no RTTI for INetworkMessageProcessingPreFilter",
+        "value": 0
       }
     },
     {
@@ -1608,22 +1608,6 @@
         "matches": 1,
         "address": "0x171aa20",
         "status": "ok"
-      }
-    },
-    {
-      "name": "NetworkVar::StateChanged",
-      "kind": "signature",
-      "windows": {
-        "matches": 10,
-        "address": "0x18019ac3a",
-        "status": "ok",
-        "detail": "10+ matches, expected: compared against the first bytes of every NetworkVar_<field> wrapper (schema.cpp), so it matches many functions by design"
-      },
-      "linux": {
-        "matches": 10,
-        "address": "0xa5bfa0",
-        "status": "ok",
-        "detail": "10+ matches, expected: compared against the first bytes of every NetworkVar_<field> wrapper (schema.cpp), so it matches many functions by design"
       }
     },
     {

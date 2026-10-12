@@ -1,11 +1,11 @@
 # Gamedata validation
 
-CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manifest `571072184844314041` · 2026-10-09T18:06:39+00:00
+CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manifest `571072184844314041` · 2026-10-12T15:41:51+00:00
 
 | | Windows | Linux |
 |---|---|---|
-| Signatures | 🟢 67 | 🟢 67 |
-| Offsets | 🟢 37 ⚪ 3 | 🟢 37 ⚪ 3 |
+| Signatures | 🟢 65 | 🟢 65 |
+| Offsets | 🟢 37 ⚪ 4 | 🟢 37 ⚪ 4 |
 
 ## Everything resolves
 
@@ -103,7 +103,7 @@ CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manife
 - 🟢🟢 `IGameEventSystem::PostEventAbstract` — W 16/21 · L 15/21
 - 🟢🟢 `IGameSystem::InitAllSystems->pFirst`
 - 🟢🟢 `IGameSystem::OnServerGamePostSimulate` — W 37/65 · L 37/66
-- 🟢🟢 `INetworkMessageProcessingPreFilter::FilterMessage`
+- ⚪⚪ `INetworkMessageProcessingPreFilter::FilterMessage`
 - 🟢🟢 `INetworkServerService::StartupServer` — W 26/51 · L 27/53
 - 🟢🟢 `ISource2GameClients::ClientCommand` — W 17/46 · L 17/46
 - 🟢🟢 `ISource2GameClients::ClientDisconnect` — W 16/46 · L 16/46
@@ -116,7 +116,6 @@ CS2 build **25815307** · Linux manifest `8144769780027006476` · Windows manife
 - 🟢🟢 `ISource2Server::GameServerSteamAPIActivated` — W 41/103 · L 41/104
 - 🟢🟢 `ISource2Server::GameServerSteamAPIDeactivated` — W 42/103 · L 42/104
 - 🟢🟢 `LegacyGameEventListener`
-- 🟢🟢 `NetworkVar::StateChanged`
 - 🟢🟢 `UTIL::CreateEntityByName`
 - 🟢🟢 `UTIL::Remove`
 
