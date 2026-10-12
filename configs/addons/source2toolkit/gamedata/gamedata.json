@@ -686,13 +686,6 @@
       "linux": "48 8B 05 ? ? ? ? 48 85 C0 74 ? 83 FF ? 77 ? 48 63 FF 48 C1 E7 ? 48 8D 44 38"
     }
   },
-  "NetworkVar::StateChanged": {
-    "signatures": {
-      "library": "server",
-      "windows": "83 7A 38 FF",
-      "linux": "83 7E 38 FF"
-    }
-  },
   "UTIL::CreateEntityByName": {
     "signatures": {
       "library": "server",
