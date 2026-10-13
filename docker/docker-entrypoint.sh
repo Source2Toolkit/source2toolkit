@@ -55,13 +55,15 @@ echo "s2sdk: $(git -C "$S2SDK_DIR" log -1 --format='%h %s')"
 echo "=== Downloading Metamod-Source ==="
 git clone --recursive --branch master --single-branch https://github.com/alliedmodders/metamod-source.git "$MMSOURCE_DIR"
 
-# Plugins are built against the SDK's vendor/khook and refuse to load on a core
-# built with any other commit, so a drift here must fail the release.
+# Hooking plugins are built against the SDK's vendor/khook and refuse to load
+# on a core built with a different khook.hpp, so a header drift here must fail
+# the release. A KHook bump that only touched its src/ is fine.
 CORE_KHOOK="$(git -C "$MMSOURCE_DIR/third_party/khook" rev-parse HEAD)"
 SDK_KHOOK="$(git -C "$SOURCE2TOOLKITSDK_DIR/vendor/khook" rev-parse HEAD)"
 echo "KHook: metamod-source $CORE_KHOOK, source2toolkit-sdk $SDK_KHOOK"
-if [ "$CORE_KHOOK" != "$SDK_KHOOK" ]; then
-  echo "KHook pin drift between metamod-source and source2toolkit-sdk -- bump one to match the other" >&2
+if ! cmp -s <(tr -d '\r' < "$MMSOURCE_DIR/third_party/khook/include/khook.hpp") \
+            <(tr -d '\r' < "$SOURCE2TOOLKITSDK_DIR/vendor/khook/include/khook.hpp"); then
+  echo "khook.hpp differs between metamod-source and source2toolkit-sdk -- bump the SDK's vendor/khook" >&2
   exit 1
 fi
 

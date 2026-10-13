@@ -89,12 +89,15 @@ Write-Host "s2sdk: $(git -C $S2SDK_DIR log -1 --format='%h %s')"
 Write-Host "=== Downloading Metamod-Source ==="
 git clone --recursive --branch master --single-branch https://github.com/alliedmodders/metamod-source.git $MMSOURCE_DIR
 
-# Plugins refuse to load on a core built with a different KHook than the SDK's.
+# Hooking plugins refuse to load on a core built with a different khook.hpp
+# than the SDK's. A KHook bump that only touched its src/ is fine.
 $CORE_KHOOK = git -C "$MMSOURCE_DIR\third_party\khook" rev-parse HEAD
 $SDK_KHOOK = git -C "$SOURCE2TOOLKITSDK_DIR\vendor\khook" rev-parse HEAD
 Write-Host "KHook: metamod-source $CORE_KHOOK, source2toolkit-sdk $SDK_KHOOK"
-if ($CORE_KHOOK -ne $SDK_KHOOK) {
-    Write-Error "KHook pin drift between metamod-source and source2toolkit-sdk -- bump one to match the other"
+$CORE_HPP = [IO.File]::ReadAllText("$MMSOURCE_DIR\third_party\khook\include\khook.hpp").Replace("`r", "")
+$SDK_HPP = [IO.File]::ReadAllText("$SOURCE2TOOLKITSDK_DIR\vendor\khook\include\khook.hpp").Replace("`r", "")
+if ($CORE_HPP -cne $SDK_HPP) {
+    Write-Error "khook.hpp differs between metamod-source and source2toolkit-sdk -- bump the SDK's vendor/khook"
     exit 1
 }
 

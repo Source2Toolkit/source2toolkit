@@ -330,11 +330,16 @@ void* PluginApi::ToolkitFactory(const char* iface, int* ret, PluginId* id)
 
     // The one detour engine on the server, as metamod handed it to the toolkit.
     if (!strcmp(iface, TOOLKIT_KHOOK_INTERFACE)) ptr = KHook::__exported__khook;
-    // ... and which KHook that is: the commit the core was compiled against
-    // (metamod's third_party/khook, the engine itself -- see the SDK's
-    // CMakeLists.txt). A plugin's KHOOK_INIT() compares it with the commit
-    // of the SDK's vendor/khook it was built from and refuses to load on a
-    // mismatch.
+    // ... and which KHook that is: a hash of the khook.hpp the core was
+    // compiled against (metamod's third_party/khook, the engine itself -- see
+    // the SDK's CMakeLists.txt). A plugin's KHOOK_INIT() compares it with the
+    // SDK's vendor/khook it was built from and refuses to load on a mismatch.
+    else if (!strcmp(iface, TOOLKIT_KHOOK_HEADER_INTERFACE))
+    {
+        static const char s_khookHeader[] = TOOLKIT_KHOOK_HEADER;
+        ptr = const_cast<char*>(s_khookHeader);
+    }
+    // The commit, for plugins built before the header hash.
     else if (!strcmp(iface, TOOLKIT_KHOOK_VERSION_INTERFACE))
     {
         static const char s_khookCommit[] = TOOLKIT_KHOOK_COMMIT;
